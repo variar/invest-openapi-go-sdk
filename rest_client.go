@@ -25,17 +25,21 @@ type RestClient struct {
 	apiURL     string
 }
 
-func NewRestClient(token string) *RestClient {
-	return NewRestClientCustom(token, RestApiURL)
+func DefaultHttpClient() *http.Client {
+	return &http.Client{
+		Timeout: 30 * time.Second,
+	}
 }
 
-func NewRestClientCustom(token, apiURL string) *RestClient {
+func NewRestClient(token string) *RestClient {
+	return NewRestClientCustom(token, RestApiURL, DefaultHttpClient())
+}
+
+func NewRestClientCustom(token, apiURL string, httpClient *http.Client) *RestClient {
 	return &RestClient{
-		httpClient: &http.Client{
-			Timeout: 30 * time.Second,
-		},
-		token:  token,
-		apiURL: apiURL,
+		httpClient: httpClient,
+		token:      token,
+		apiURL:     apiURL,
 	}
 }
 

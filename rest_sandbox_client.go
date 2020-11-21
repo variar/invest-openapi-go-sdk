@@ -14,11 +14,11 @@ type SandboxRestClient struct {
 }
 
 func NewSandboxRestClient(token string) *SandboxRestClient {
-	return &SandboxRestClient{NewRestClientCustom(token, RestApiURL+"/sandbox")}
+	return &SandboxRestClient{NewRestClientCustom(token, RestApiURL+"/sandbox", DefaultHttpClient())}
 }
 
-func NewSandboxRestClientCustom(token, apiURL string) *SandboxRestClient {
-	return &SandboxRestClient{NewRestClientCustom(token, apiURL)}
+func NewSandboxRestClientCustom(token, apiURL string, httpClient *http.Client) *SandboxRestClient {
+	return &SandboxRestClient{NewRestClientCustom(token, apiURL, httpClient)}
 }
 
 func (c *SandboxRestClient) Register(ctx context.Context, accountType AccountType) (Account, error) {
